@@ -1,0 +1,23 @@
+#To get the uptime of multiple servers lastboottime
+############################################################
+$Computernames = Get-Content <Mention the server lists in .txt file>
+        @(
+        foreach ($computername in $computernames)
+        {
+####This will first check the server ping response########
+        if ( Test-Connection -ComputerName $computername -Count 2 -ErrorAction SilentlyContinue )
+          {
+#######If server is responding to ping response########## It will check for lastboottime
+        $result = Get-WmiObject Win32_OperatingSystem -computer $computername
+        $Time = $result.ConvertToDateTime($result.Lastbootuptime)
+        [TimeSpan]$uptime = New-TimeSpan $time $(get-date)
+#########To convert the Output in Days,Hours,Mnutes
+         Write-output "$computername Uptime is  $($uptime.days) Days $($uptime.hours) Hours $($uptime.minutes) Minutes"
+           }
+             else {  
+#######If Ping response fails then server will display the outpout <computername is not pinging>###########
+          Write-output "$computername is not pinging"
+                  }
+               }  
+
+         ) | out-file "Mention the path to get the output file in .txt" 
