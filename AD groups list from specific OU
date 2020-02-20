@@ -1,0 +1,7 @@
+#########################
+To get the AD groups list from specific OU.
+#########################
+
+Import-Module ActiveDirectory  
+
+get-adgroup -filter * -searchbase " mention the AD OU from where you to get the group list" | sort name | select Name | Out-File <Mention the path to get the output in text file>
