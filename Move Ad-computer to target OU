@@ -1,0 +1,18 @@
+###########################
+Move Ad-computer 
+###########################
+ 
+$ComputersPath= Import-Csv -Path "<Mention the input csv with AD computer objectlist> " 
+
+$TargetOU = "Mention the Target OU"
+
+foreach ($item in $ComputersPath){ 
+
+
+$computer = Get-ADComputer $item.ComputerName
+
+Move-ADObject -Identity $computer.DistinguishedName -TargetPath $TargetOU
+
+Write-Host Computer account $computer.Name has been moved successfully 
+
+}
