@@ -1,0 +1,11 @@
+#########################
+To get the specific AD groups membership
+#########################
+
+Import-Module ActiveDirectory 
+$groups = Get-Content <Mention the input file with AD groups list> 
+
+$list = foreach ( $group in $groups ) { Get-ADGroupMember $group | get-Aduser -properties * | Select-Object $group,name,samaccountname,Enabled | Format-Table
+}
+$list | Out-File <Mention the path to get the output in text file>
+
