@@ -1,7 +1,7 @@
 ###########################
 To modify the Displayname of the Ad users
 ###########################
- 
+Import-Module ActiveDirectory  
 import-csv "<Mention the input csv with AD Users list> "  | ForEach { 
 
 $user = Get-ADuser -identity $_.samaccountname -Properties displayname
