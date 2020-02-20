@@ -1,0 +1,15 @@
+#########################
+Disable and move the AD users account to disabled OU.
+######################### 
+
+Import-Module ActiveDirectory
+$target = "Mention the Target OU"
+Import-Csv "<Mention the input csv with AD Users list> " | ForEach-Object {  
+
+$samAccountName = $_.”samAccountName”  
+
+Get-ADUser -Identity $samAccountName | Disable-ADAccount | Move-ADObject -Identity $samAccountName -TargetPath $target 
+
+} 
+
+###########################
