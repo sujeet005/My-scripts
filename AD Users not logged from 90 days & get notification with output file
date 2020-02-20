@@ -1,0 +1,38 @@
+###########################
+Get AD Users not logged from 90 days & get notification with output file
+###########################
+ 
+Import-Module ActiveDirectory 
+
+$DaysInactive = 90 
+
+$InactiveDate = (Get-Date).Adddays(-($DaysInactive)) 
+
+###############Filter AD user with Enabled status and exculding specific samaccountname###############
+
+$users = Get-ADUser -Filter {(Enabled -eq $TRUE) -and (samaccountname -ne "SVC_*") -or (samaccountname -ne "IND_*")} -Properties Name,SamAccountName,LastLogonDate,enabled,distinguishedname
+| Where {($_.LastLogonDate -lt $InactiveDate) -and ($_.LastLogonDate -ne $NULL)}
+| Select SamAccountName,Name,Enabled,LastLogonDate,Distinguishedname 
+
+$users | export-csv "<Mention the path to get the output in .CSV file>"
+
+####################To send the Out-file Over Email###########################
+
+$From = 'ABC.com' <mention source Email address>
+
+$To = 'XYZ.com' <mention Destination Email address>
+
+$subject = "AD Users not logged from last logon 90 days" 
+
+$body = "AD Users not logged from last 90 days"   
+
+$Attach = "<Mention the path of exported output .csv file above >"
+
+$SMTP = "Mention the SMTP server details"  
+
+If($users) 
+
+{ 
+Send-MailMessage -from $From -to $To -Subject $subject -Body $body -Attachments $Attach -port 25 -SmtpServer $SMTP -BodyAsHtml 
+
+} 
