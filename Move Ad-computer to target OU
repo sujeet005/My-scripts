@@ -1,7 +1,7 @@
 ###########################
 Move Ad-computer 
 ###########################
- 
+Import-Module ActiveDirectory  
 $ComputersPath= Import-Csv -Path "<Mention the input csv with AD computer objectlist> " 
 
 $TargetOU = "Mention the Target OU"
